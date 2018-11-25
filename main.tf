@@ -3,7 +3,7 @@ provider "aws" {
   version = "~> 1.35.0"
 }
 
-module "lambda_bot" {
- 
+module "frontend" {
+  source = "terraform"
 }
 
