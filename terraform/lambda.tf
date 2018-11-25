@@ -13,6 +13,13 @@ resource "aws_lambda_function" "budget_bot" {
   handler          = "budget-bot.lambda_handler"
   source_code_hash = "${data.archive_file.budget_bot_lambda.output_base64sha256}"
 
+  environment {
+    variables = {
+      TELEGRAM_TOKEN  = ""
+      DB_TABLE = ""
+    }
+  }
+
   tags = "${merge(
             var.tags,
             map("Scope", "${var.prefix}lambda_function_to_elasticsearch${var.suffix}"),
