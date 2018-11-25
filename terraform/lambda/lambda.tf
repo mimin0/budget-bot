@@ -5,8 +5,8 @@ data "archive_file" "budget_bot_lambda" {
 }
 resource "aws_lambda_function" "budget_bot" {
   filename         = "${path.cwd}/budget-bot.zip"
-  function_name    = "${var.prefix}budget-bot${var.suffix}"
-  description      = "${var.prefix}budget-bot${var.suffix}"
+  function_name    = "${var.name}"
+  description      = "${var.name}"
   timeout          = 300
   runtime          = "python${var.python_version}"
   role             = "${aws_iam_role.role.arn}"
@@ -22,7 +22,7 @@ resource "aws_lambda_function" "budget_bot" {
 
   tags = "${merge(
             var.tags,
-            map("Scope", "${var.prefix}lambda_function_to_elasticsearch${var.suffix}"),
+            map("Scope", "lambda_function_to_DB_${var.region}"),
             )}"
 }
 

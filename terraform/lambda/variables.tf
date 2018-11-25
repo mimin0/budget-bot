@@ -1,14 +1,4 @@
-variable "prefix" {
-  default = ""
-}
-
-variable "suffix" {
-  default = ""
-}
-
-variable "schedule" {
-  default = "cron(0 3 * * ? *)"
-}
+variable "name" {}
 
 variable "python_version" {
   default = "3.6"
@@ -20,3 +10,6 @@ variable "tags" {
     Name = "budget-bot"
   }
 }
+variable "region" {}
+
+

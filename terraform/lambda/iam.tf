@@ -1,16 +1,16 @@
 data "template_file" "policy" {
-  template = "${file("${path.cwd}/terraform/files/budget_bot_policy.json")}"
+  template = "${file("${path.cwd}/terraform/lambda/files/budget_bot_policy.json")}"
 }
 
 resource "aws_iam_policy" "policy" {
-  name        = "${var.prefix}es-cleanup${var.suffix}"
+  name        = "iamp-budget-bot-lambda"
   path        = "/"
-  description = "Policy for ${var.prefix}budget-bot${var.suffix} Lambda function"
+  description = "Policy for budget-bot Lambda function"
   policy      = "${data.template_file.policy.rendered}"
 }
 
 resource "aws_iam_role" "role" {
-  name = "${var.prefix}budget-bot${var.suffix}"
+  name = "iamr-budget-bot-lambda"
 
   assume_role_policy = <<EOF
 {
