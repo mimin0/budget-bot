@@ -14,3 +14,6 @@ variable "account_id" {
 
 variable "lambda" {}
 
+variable "deployed_at" {}
+
+

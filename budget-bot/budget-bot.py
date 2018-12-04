@@ -47,7 +47,7 @@ def get_records(message_time):
 
     return list_of_recodrs
 
-def hello(event, context):
+def lambda_handler(event, context):
     logger.info('START...')
     logger.info(event)
 

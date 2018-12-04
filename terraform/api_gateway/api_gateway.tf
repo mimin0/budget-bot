@@ -7,14 +7,14 @@ resource "aws_api_gateway_rest_api" "budget_bot_api" {
 resource "aws_api_gateway_resource" "budget_bot_resource" {
   rest_api_id = "${aws_api_gateway_rest_api.budget_bot_api.id}"
   parent_id   = "${aws_api_gateway_rest_api.budget_bot_api.root_resource_id}"
-  path_part   = "hello"
+  path_part   = "${var.lambda}"
 }
 
 # Example: request for GET /hello
 resource "aws_api_gateway_method" "request_method" {
   rest_api_id   = "${aws_api_gateway_rest_api.budget_bot_api.id}"
   resource_id   = "${aws_api_gateway_resource.budget_bot_resource.id}"
-  http_method   = "ANY"
+  http_method   = "GET"
   authorization = "NONE"
 }
 
@@ -59,7 +59,16 @@ resource "aws_lambda_permission" "allow_api_gateway" {
   statement_id  = "AllowExecutionFromApiGateway"
   action        = "lambda:InvokeFunction"
   principal     = "apigateway.amazonaws.com"
-  source_arn    = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.budget_bot_api.id}/*/${var.method}${var.lambda}"
+  source_arn    = "arn:aws:execute-api:${var.region}:${var.account_id}:${aws_api_gateway_rest_api.budget_bot_api.id}/*/${var.method}/${var.lambda}"
+}
+
+resource "aws_api_gateway_deployment" "instance" {
+  rest_api_id = "${aws_api_gateway_rest_api.budget_bot_api.id}"
+  stage_name  = "prod"
+
+  variables {
+    deployed_at = "${var.deployed_at}"
+  }
 }
 
 output "http_method" {

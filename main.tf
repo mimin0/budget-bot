@@ -16,6 +16,7 @@ module "api_gateway_bot" {
   lambda = "${var.lambda_name}"
   account_id = "${data.aws_caller_identity.current.account_id}"
   region = "${var.region}"
+  deployed_at = "${var.deployed_at}"
 }
 
 

@@ -5,3 +5,5 @@ variable "region" {
 variable "lambda_name" {
   default = "budget-bot"
 }
+
+variable "deployed_at" {}
