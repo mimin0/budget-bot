@@ -36,7 +36,25 @@ NOTE: Terraform’s `aws_api_gateway_deployment` will not deploy a new version o
 
 ### Telegram setup
 
-## First eployment of budget bot
+#### Create a new Bot
+
+#### Webhook vs Polling
+
+Great! I have the API key now. Next, I have to choose between the two ways to get messages from Telegram.
+
+Webhooks via setWebhook or
+Polling via getUpdates
+I’m fairly certain that it is easier to set up with getUpdates but polling isn’t always an option and not having real-time updates isn’t as fun IMHO :P So, for this bot, I went with webhooks as I wanted the bot to respond in real-time.
+
+To set up the Webhook all I had to do is to send a curl request to the Telegram Api.
+
+    curl --request POST --url https://api.telegram.org/bot<YOUR_TOKEN>/setWebhook --header 'content-type: application/json' --data '{"url": "<AWS_API_GATEWAY_ENDPOINT>"}'
+
+you should get a response like that:
+
+    {"ok":true,"result":true,"description":"Webhook was set"}
+
+## First deployment of budget bot
 
 ## Rolling out new version of budget bot
 

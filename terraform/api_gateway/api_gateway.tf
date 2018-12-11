@@ -14,7 +14,7 @@ resource "aws_api_gateway_resource" "budget_bot_resource" {
 resource "aws_api_gateway_method" "request_method" {
   rest_api_id   = "${aws_api_gateway_rest_api.budget_bot_api.id}"
   resource_id   = "${aws_api_gateway_resource.budget_bot_resource.id}"
-  http_method   = "GET"
+  http_method   = "POST"
   authorization = "NONE"
 }
 
