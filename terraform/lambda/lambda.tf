@@ -1,6 +1,6 @@
 data "archive_file" "budget_bot_lambda" {
   type        = "zip"
-  source_file = "${path.cwd}/budget-bot/budget-bot.py"
+  source_dir = "${path.cwd}/budget-bot"
   output_path = "${path.cwd}/budget-bot.zip"
 }
 resource "aws_lambda_function" "budget_bot" {

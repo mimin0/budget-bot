@@ -19,4 +19,6 @@ module "api_gateway_bot" {
   deployed_at = "${var.deployed_at}"
 }
 
-
+module "budget_database" {
+  source = "terraform/dynamodb"
+}
