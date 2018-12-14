@@ -61,3 +61,6 @@ you should get a response like that:
 
 ## References:
 - https://medium.com/coryodaniel/til-forcing-terraform-to-deploy-a-aws-api-gateway-deployment-ed36a9f60c1a
+- https://dev.to/nqcm/-building-a-telegram-bot-with-aws-api-gateway-and-aws-lambda-27fg
+- https://github.com/lesterchan/telegram-bot
+- https://hackernoon.com/serverless-telegram-bot-on-aws-lambda-851204d4236c

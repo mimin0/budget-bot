@@ -2,6 +2,8 @@ from __future__ import print_function # Python 2/3 compatibility
 import boto3
 import json
 import decimal
+import secrets
+
 
 # Helper class to convert a DynamoDB item to JSON.
 class DecimalEncoder(json.JSONEncoder):
@@ -13,35 +15,34 @@ class DecimalEncoder(json.JSONEncoder):
                 return int(o)
         return super(DecimalEncoder, self).default(o)
 
-dynamodb = boto3.resource('dynamodb')
-
-table = dynamodb.Table('budgetBot')
-
-recordId = "rf34r4tg6dt7"
-datestamp = "22/01/2018"
-
-response = table.put_item(
-   Item={
-        'recordId': recordId,
-        'operationDate': datestamp,
-        'operationCatigory': "Fun",
-        'operationSumm': 10
-    }
-)
-
-def put_record(datestamp="23/01/2018", exp_category=None, exp_summ=15, exp_description=None):
+def db_connector():
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table('budgetBot')
+    return table
 
-    recordId = "mf3rjh6g6dt34"
-
+def put_record(datestamp="", exp_category=None, exp_summ='15', exp_description=None):
+    table = db_connector()
+    recordId = secrets.token_urlsafe(8)
     response = table.put_item(
     Item={
             'recordId': recordId,
             'operationDate': datestamp,
-            'operationCatigory': "Fun",
-            'operationSumm': exp_summ
+            'operationCatigory': exp_category,
+            'operationSumm': exp_summ,
+            'operationDescription': exp_description
         }
     )
     print("PutItem succeeded:")
     print(json.dumps(response, indent=4, cls=DecimalEncoder))
+
+def get_records(datestamp):
+    responce_data = []
+    table = db_connector()
+    response = table.scan()
+    for item in response['Items']:
+        if item['operationDate'] >= datestamp:
+            responce_data.append(item)
+    
+    return responce_data
+
+    print("GetItem succeeded:")
