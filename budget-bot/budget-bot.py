@@ -3,7 +3,7 @@ from botocore.vendored import requests
 import datetime
 import dynamo_helper
 
-TOKEN = 'XXX'
+TOKEN = '***'
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
 date_format = "%Y-%m-%d"
 
@@ -32,6 +32,7 @@ def lambda_handler(event, context):
         for record in get_data:
             reply_message += "{} \t {} \t {} \t {}\n".format(record["operationDate"], record["operationSumm"],
                                         record["operationCatigory"], record["operationDescription"])
+    
     elif message_data_split[0] == '/show_week':
         ## /show_week
         records_from_time = datetime.datetime.now() - datetime.timedelta(days=7)
@@ -39,7 +40,11 @@ def lambda_handler(event, context):
         for record in get_data:
             reply_message += "{} \t {} \t {} \t {}\n".format(record["operationDate"], record["operationSumm"],
                                         record["operationCatigory"], record["operationDescription"])
-
+    
+    elif message_data_split[0] == '/help':
+        ## /help
+        reply_message += "{}".format('Catgories: food, auto, onetime, fun, travel, worklunch, rent, loan, tickets')
+    
     else:
         reply_message = "bad command or format...\n use\n \t/add [Fun] [50] [Beer]\nor\n \t/show_today\n \t/show_week"
 
