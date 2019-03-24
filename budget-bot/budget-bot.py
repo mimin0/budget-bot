@@ -2,6 +2,10 @@ import json
 from botocore.vendored import requests
 import datetime
 import dynamo_helper
+import logging
+
+logger = logging.getLogger()
+logger.setLevel(logging.INFO)
 
 TOKEN = '***'
 URL = "https://api.telegram.org/bot{}/".format(TOKEN)
@@ -29,6 +33,7 @@ def lambda_handler(event, context):
     elif message_data_split[0] == '/show_today':
         ## /show_today
         get_data = dynamo_helper.get_records(datestamp=now.strftime(date_format))
+        logger.info('got data{}'.format(get_data))
         for record in get_data:
             reply_message += "{} \t {} \t {} \t {}\n".format(record["operationDate"], record["operationSumm"],
                                         record["operationCatigory"], record["operationDescription"])
@@ -37,10 +42,18 @@ def lambda_handler(event, context):
         ## /show_week
         records_from_time = datetime.datetime.now() - datetime.timedelta(days=7)
         get_data = dynamo_helper.get_records(datestamp=records_from_time.strftime(date_format))
+        logger.info('got data{}'.format(get_data))
+        sorted_list = []
         for record in get_data:
-            reply_message += "{} \t {} \t {} \t {}\n".format(record["operationDate"], record["operationSumm"],
-                                        record["operationCatigory"], record["operationDescription"])
-    
+            sorted_list.append([record["operationDate"], record["operationSumm"],
+                                        record["operationCatigory"], record["operationDescription"]])
+            # reply_message += "{} \t {} \t {} \t {}\n".format(record["operationDate"], record["operationSumm"],
+            #                             record["operationCatigory"], record["operationDescription"])
+        sorted_list.sort(key=lambda x: x[0])
+        for i in sorted_list:
+            reply_message += "{} \t {} \t {} \t {}\n".format(i[0], i[1], i[2], i[3])
+        logger.info('sorted_list: {}'.format(sorted_list))
+        
     elif message_data_split[0] == '/help':
         ## /help
         reply_message += "{}".format('Catgories: food, auto, onetime, fun, travel, worklunch, rent, loan, tickets')
